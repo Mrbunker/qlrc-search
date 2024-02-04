@@ -1,16 +1,21 @@
-import { getLyric } from "@/api/music";
+"use client";
+import { LyricResult, getLyric } from "@/api/music";
 import PageContainer from "../../components/PageContainer";
 import LyricView from "./components/LyricView";
-import { notFound } from "next/navigation";
+import { useEffect, useState } from "react";
 
-const Lyric = async ({ params }: { params: { songmid: string } }) => {
+const Lyric = ({ params }: { params: { songmid: string } }) => {
   const { songmid } = params;
-  const res = await getLyric({ songmid });
+  const [data, setData] = useState<LyricResult>();
+  const fetchLyric = async (songmid: string) => {
+    const res = await getLyric({ songmid });
+    setData(res.data);
+  };
+  useEffect(() => {
+    fetchLyric(songmid);
+  }, [songmid]);
 
-  if (!res.data) {
-    notFound();
-  }
-  const { lyric, tlyric } = res.data;
+  const { lyric, tlyric } = data || {};
   return (
     <PageContainer>
       <LyricView lyric={lyric} tlyric={tlyric} />

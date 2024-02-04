@@ -3,8 +3,11 @@ import { useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 
-const LyricView = ({ lyric, tlyric }: { lyric: string; tlyric?: string }) => {
+const LyricView = ({ lyric, tlyric }: { lyric?: string; tlyric?: string }) => {
   const [checked, setChecked] = useState(false);
+  if (!lyric) {
+    return "暂无歌词";
+  }
   return (
     <div>
       <div className="mt-4 flex items-center space-x-2">
