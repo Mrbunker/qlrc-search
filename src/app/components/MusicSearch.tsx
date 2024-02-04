@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import Link from "next/link";
 
 type Porps = {};
 
@@ -72,17 +73,20 @@ const MusicSearch = ({}: Porps) => {
       ) : (
         searchRes.map((item, index) => (
           <div
-            key={item.songmid}
             className="p-2 mb-2 border rounded cursor-pointer hover:bg-accent"
+            key={item.songmid}
             tabIndex={3 + index}
-            onClick={() => {
-              router.push(`/lyric/${item.songmid}`);
-            }}
           >
-            <p className=" text-primary">{item.songname}</p>
-            <p className=" text-muted-foreground">
-              {item.singer.map((s) => s.name).join(", ")}
-            </p>
+            <Link
+              prefetch
+              href={`/lyricSSR/${item.songmid}`}
+              // href={`/lyric/${item.songmid}`}
+            >
+              <p className=" text-primary">{item.songname}</p>
+              <p className=" text-muted-foreground">
+                {item.singer.map((s) => s.name).join(", ")}
+              </p>
+            </Link>
           </div>
         ))
       )}
