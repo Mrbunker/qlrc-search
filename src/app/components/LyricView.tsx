@@ -1,16 +1,22 @@
 "use client";
 import { useState } from "react";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
 import { formatLrc } from "@/lib/music";
+import { useLyricStore } from "@/store/lyric";
+import { LabelSwitch } from "@/components/ui/labelSwtich";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
-const LyricView = ({ lyric, tlyric }: { lyric?: string; tlyric?: string }) => {
-  const [checked, setChecked] = useState(false);
+const LyricView = () => {
+  const [tranlationMode, setTranslationMode] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const { setTlyric, setLyric, lyric, tlyric } = useLyricStore(
+    (state) => state
+  );
   if (!lyric) {
     return "暂无歌词";
   }
   const { title, artist, album, lyricText } = formatLrc(lyric);
-  const tLyricText = tlyric ? formatLrc(tlyric).lyricText : "";
+  const tlyricText = tlyric ? formatLrc(tlyric).lyricText : "";
   return (
     <div className="mt-4">
       <div>
@@ -20,16 +26,42 @@ const LyricView = ({ lyric, tlyric }: { lyric?: string; tlyric?: string }) => {
         <p className="text-gray-500">{album}</p>
       </div>
       <div className="mt-4 flex items-center space-x-2">
-        <Switch
-          disabled={!tlyric}
+        <LabelSwitch
           id="translation"
-          checked={checked}
-          onCheckedChange={setChecked}
+          label="翻译"
+          disabled={!tlyric}
+          checked={tranlationMode}
+          onCheckedChange={setTranslationMode}
         />
-        <Label htmlFor="translation">翻译</Label>
+        <LabelSwitch
+          id="edit"
+          label="编辑"
+          checked={editMode}
+          onCheckedChange={setEditMode}
+        />
       </div>
-      <div className="whitespace-pre-line	mt-4">
-        {checked ? tLyricText : lyricText}
+      <div className="my-6">
+        {editMode ? (
+          <form>
+            <Textarea
+              className="h-96"
+              name={tranlationMode ? "tlyric" : "lyric"}
+              value={tranlationMode ? tlyric : lyric}
+              onChange={(e) => {
+                tranlationMode
+                  ? setTlyric(e.target.value)
+                  : setLyric(e.target.value);
+              }}
+            />
+            {/* <Button className="mt-4" type="submit" onClick={() => {}}>
+              提交编辑
+            </Button> */}
+          </form>
+        ) : (
+          <div className="whitespace-pre-line">
+            {tranlationMode ? tlyricText : lyricText}
+          </div>
+        )}
       </div>
     </div>
   );

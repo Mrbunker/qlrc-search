@@ -78,8 +78,6 @@ const MusicSearch = ({}: Porps) => {
               className="flex items-center gap-4"
               key={item.songmid}
               tabIndex={3 + index}
-              // prefetch
-              // href={`/lyricSSR/${item.songmid}`}
               href={`/lyric/${item.songmid}`}
             >
               <div className="w-12 h-12 object-cover rounded-lg overflow-hidden">

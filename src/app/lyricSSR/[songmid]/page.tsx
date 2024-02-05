@@ -1,8 +1,8 @@
 import { getLyric } from "@/api/music";
 import { notFound } from "next/navigation";
 import LyricView from "../../components/LyricView";
-import PageContainer from "../../components/PageContainer";
 
+/** @deprecated */
 const Lyric = async ({ params }: { params: { songmid: string } }) => {
   const { songmid } = params;
   const res = await getLyric({ songmid });
@@ -11,10 +11,7 @@ const Lyric = async ({ params }: { params: { songmid: string } }) => {
     notFound();
   }
   const { lyric, tlyric } = res.data;
-  return (
-    <PageContainer>
-      <LyricView lyric={lyric} tlyric={tlyric} />
-    </PageContainer>
-  );
+  return "deprecated";
+  // return <LyricView lyric={lyric} tlyric={tlyric} />;
 };
 export default Lyric;
