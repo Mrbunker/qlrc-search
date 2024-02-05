@@ -1,9 +1,8 @@
 "use client";
-import { getLyric } from "@/api/music";
-import PageContainer from "../../components/PageContainer";
-import LyricView from "../../components/LyricView";
 import { useCallback, useEffect } from "react";
+import { getLyric } from "@/api/music";
 import { useLyricStore } from "@/store/lyric";
+import LyricView from "../../components/LyricView";
 
 const Lyric = ({ params }: { params: { songmid: string } }) => {
   const { songmid } = params;
@@ -22,10 +21,6 @@ const Lyric = ({ params }: { params: { songmid: string } }) => {
     fetchLyric(songmid);
   }, [songmid, fetchLyric]);
 
-  return (
-    <PageContainer>
-      <LyricView />
-    </PageContainer>
-  );
+  return <LyricView />;
 };
 export default Lyric;
