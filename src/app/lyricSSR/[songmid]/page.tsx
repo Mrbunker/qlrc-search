@@ -1,6 +1,6 @@
 import { getLyric } from "@/api/music";
 import { notFound } from "next/navigation";
-import LyricView from "../../lyric/[songmid]/components/LyricView";
+import LyricView from "../../components/LyricView";
 import PageContainer from "../../components/PageContainer";
 
 const Lyric = async ({ params }: { params: { songmid: string } }) => {

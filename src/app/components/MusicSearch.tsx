@@ -78,9 +78,9 @@ const MusicSearch = ({}: Porps) => {
             tabIndex={3 + index}
           >
             <Link
-              prefetch
-              href={`/lyricSSR/${item.songmid}`}
-              // href={`/lyric/${item.songmid}`}
+              // prefetch
+              // href={`/lyricSSR/${item.songmid}`}
+              href={`/lyric/${item.songmid}`}
             >
               <p className=" text-primary">{item.songname}</p>
               <p className=" text-muted-foreground">

@@ -1,7 +1,7 @@
 "use client";
 import { LyricResult, getLyric } from "@/api/music";
 import PageContainer from "../../components/PageContainer";
-import LyricView from "./components/LyricView";
+import LyricView from "../../components/LyricView";
 import { useEffect, useState } from "react";
 
 const Lyric = ({ params }: { params: { songmid: string } }) => {
