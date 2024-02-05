@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import LyricView from "../../components/LyricView";
 import PageContainer from "../../components/PageContainer";
 
+/** @deprecated */
 const Lyric = async ({ params }: { params: { songmid: string } }) => {
   const { songmid } = params;
   const res = await getLyric({ songmid });
@@ -13,7 +14,8 @@ const Lyric = async ({ params }: { params: { songmid: string } }) => {
   const { lyric, tlyric } = res.data;
   return (
     <PageContainer>
-      <LyricView lyric={lyric} tlyric={tlyric} />
+      {/* <LyricView lyric={lyric} tlyric={tlyric} /> */}
+      xixi
     </PageContainer>
   );
 };

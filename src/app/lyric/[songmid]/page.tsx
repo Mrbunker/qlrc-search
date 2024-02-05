@@ -1,24 +1,30 @@
 "use client";
-import { LyricResult, getLyric } from "@/api/music";
+import { getLyric } from "@/api/music";
 import PageContainer from "../../components/PageContainer";
 import LyricView from "../../components/LyricView";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
+import { useLyricStore } from "@/store/lyric";
 
 const Lyric = ({ params }: { params: { songmid: string } }) => {
   const { songmid } = params;
-  const [data, setData] = useState<LyricResult>();
-  const fetchLyric = async (songmid: string) => {
-    const res = await getLyric({ songmid });
-    setData(res.data);
-  };
+  const setTlyric = useLyricStore(({ setTlyric }) => setTlyric);
+  const setLyric = useLyricStore(({ setLyric }) => setLyric);
+
+  const fetchLyric = useCallback(
+    async (songmid: string) => {
+      const res = await getLyric({ songmid });
+      setTlyric(res.data?.tlyric || "");
+      setLyric(res.data?.lyric || "");
+    },
+    [setTlyric, setLyric]
+  );
   useEffect(() => {
     fetchLyric(songmid);
-  }, [songmid]);
+  }, [songmid, fetchLyric]);
 
-  const { lyric, tlyric } = data || {};
   return (
     <PageContainer>
-      <LyricView lyric={lyric} tlyric={tlyric} />
+      <LyricView />
     </PageContainer>
   );
 };
