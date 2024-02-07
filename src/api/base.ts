@@ -1,22 +1,22 @@
 type ResponseData<D> = {
   errmsg: { code: string } | "";
   errno: number;
-  data?: D;
+  data: D;
 };
 
-const baseUrl = `https://api.timelessq.com/music/tencent`;
-export const request = async <D>({
-  apiPath,
-  method = "GET",
-  params,
-  revalidate,
-}: {
-  apiPath: string;
-  method?: "GET" | "POST";
-  params?: Record<string, any>;
-  revalidate?: NextFetchRequestConfig["revalidate"];
-}) => {
-  let fullUrl = baseUrl + apiPath;
+export const baseRequest = async <D>(
+  apiUrl: string,
+  {
+    method = "GET",
+    params,
+    revalidate,
+  }: {
+    method?: "GET" | "POST";
+    params?: Record<string, any>;
+    revalidate?: NextFetchRequestConfig["revalidate"];
+  }
+) => {
+  let fullUrl = apiUrl;
 
   const requestOptions: RequestInit = {
     method,

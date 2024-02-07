@@ -1,4 +1,4 @@
-import { request } from "./base";
+import { baseRequest } from "./base";
 
 export interface SearchResult {
   list: MusicItem[];
@@ -34,12 +34,14 @@ export const searchMusic = (params: {
   page?: number;
   pageSize?: number;
 }) => {
-  return request<SearchResult>({
-    apiPath: "/search",
-    method: "GET",
-    params: params,
-    revalidate: 10,
-  });
+  return baseRequest<SearchResult>(
+    "https://api.timelessq.com/music/tencent/search",
+    {
+      method: "GET",
+      params: params,
+      revalidate: 10,
+    }
+  );
 };
 
 export interface LyricResult {
@@ -47,11 +49,26 @@ export interface LyricResult {
   tlyric?: string;
 }
 
-export const getLyric = (params: { songmid: string }) => {
-  return request<LyricResult>({
-    apiPath: "/lyric",
-    method: "GET",
-    params: params,
-    revalidate: 10,
-  });
+export const getLyric = async (params: { songmid: string }) => {
+  try {
+    const kvLrc = await baseRequest<LyricResult>("/api/get_kv", {
+      method: "GET",
+      params: { key: `lyric_${params.songmid}` },
+      revalidate: 10,
+    });
+    if (!kvLrc.data?.lyric) {
+      throw new Error("kv lyric not found");
+    } else {
+      return kvLrc;
+    }
+  } catch (e) {
+    return baseRequest<LyricResult>(
+      "https://api.timelessq.com/music/tencent/lyric",
+      {
+        method: "GET",
+        params: params,
+        revalidate: 10,
+      }
+    );
+  }
 };
