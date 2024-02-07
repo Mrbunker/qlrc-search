@@ -4,7 +4,7 @@ import { formatLrc } from "@/lib/music";
 import { LabelSwitch } from "@/components/ui/labelSwtich";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { setKV } from "@/api/kv";
 import useSWR from "swr";
 import { getLyric } from "@/api/music";
