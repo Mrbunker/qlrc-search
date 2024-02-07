@@ -1,22 +1,42 @@
 "use client";
-import { useState } from "react";
+import { MouseEvent, useState } from "react";
 import { formatLrc } from "@/lib/music";
-import { useLyricStore } from "@/store/lyric";
 import { LabelSwitch } from "@/components/ui/labelSwtich";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { usePathname, useRouter } from "next/navigation";
+import { setKV } from "@/api/kv";
+import useSWR from "swr";
+import { getLyric } from "@/api/music";
 
 const LyricView = () => {
   const [tranlationMode, setTranslationMode] = useState(false);
   const [editMode, setEditMode] = useState(false);
-  const { setTlyric, setLyric, lyric, tlyric } = useLyricStore(
-    (state) => state
-  );
-  if (!lyric) {
-    return "暂无歌词";
+
+  const songmid = usePathname().replace("/lyric/", "");
+
+  const { data: res, isLoading, error, mutate } = useSWR({ songmid }, getLyric);
+  if (isLoading) {
+    return <div>loading...</div>;
   }
+  if (error || !res) {
+    return <div>暂无歌词</div>;
+  }
+  const { lyric, tlyric } = res.data;
+
+  const handleSave = async (e: MouseEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const lyric = formData.get("lyric") as string;
+    const tlyric = formData.get("tlyric") as string;
+    await setKV({ key: `lyric_${songmid}`, value: { lyric, tlyric } });
+    mutate({ ...res, data: { lyric, tlyric } });
+    setEditMode(false);
+  };
+
   const { title, artist, album, lyricText } = formatLrc(lyric);
   const tlyricText = tlyric ? formatLrc(tlyric).lyricText : "";
+
   return (
     <div className="mt-4">
       <div>
@@ -42,20 +62,15 @@ const LyricView = () => {
       </div>
       <div className="my-6">
         {editMode ? (
-          <form>
+          <form onSubmit={handleSave}>
             <Textarea
               className="h-96"
               name={tranlationMode ? "tlyric" : "lyric"}
-              value={tranlationMode ? tlyric : lyric}
-              onChange={(e) => {
-                tranlationMode
-                  ? setTlyric(e.target.value)
-                  : setLyric(e.target.value);
-              }}
+              defaultValue={tranlationMode ? tlyric : lyric}
             />
-            {/* <Button className="mt-4" type="submit" onClick={() => {}}>
+            <Button className="mt-4" type="submit">
               提交编辑
-            </Button> */}
+            </Button>
           </form>
         ) : (
           <div className="whitespace-pre-line">

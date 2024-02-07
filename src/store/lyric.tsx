@@ -3,15 +3,15 @@ import { create } from "zustand";
 interface LyricState {
   lyric: string;
   tlyric: string;
-  setLyric: (str: string) => void;
-  setTlyric: (str: string) => void;
+  setLyric: (lyric: string) => void;
+  setTlyric: (tlyric: string) => void;
 }
 
 const useLyricStore = create<LyricState>()((set) => ({
   lyric: "",
   tlyric: "",
-  setLyric: (str) => set(() => ({ lyric: str })),
-  setTlyric: (str) => set(() => ({ tlyric: str })),
+  setLyric: (lyric) => set(() => ({ lyric })),
+  setTlyric: (tlyric) => set(() => ({ tlyric })),
 }));
 
 export { useLyricStore };
