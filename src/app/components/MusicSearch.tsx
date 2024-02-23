@@ -11,6 +11,7 @@ type Porps = {};
 const MusicSearch = ({}: Porps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const keyword = searchParams.get("search") || "";
   const pathname = usePathname();
 
   const [searchRes, setSearchRes] = useState<MusicItem[]>([]);
@@ -40,11 +41,8 @@ const MusicSearch = ({}: Porps) => {
   };
 
   useEffect(() => {
-    const keyword = searchParams.get("search") || "";
-    if (keyword) {
-      submitSearch(keyword);
-    }
-  }, [searchParams]);
+    submitSearch(keyword);
+  }, [keyword]);
 
   const marginTop = searchRes.length > 0 || loading ? `mt-8` : `mt-80`;
   return (
@@ -62,8 +60,8 @@ const MusicSearch = ({}: Porps) => {
           type="search"
           name="keyword"
           tabIndex={1}
-          autoFocus={!searchParams.get("search")}
-          defaultValue={searchParams.get("search") || undefined}
+          autoFocus={!keyword}
+          defaultValue={keyword || undefined}
         />
         <Button type="submit" tabIndex={2}>
           Search

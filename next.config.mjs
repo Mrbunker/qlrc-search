@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: true,
+
   env: {
     YAPI_TOKEN: process.env.YAPI_TOKEN,
     YAPI_UID: process.env.YAPI_UID,
