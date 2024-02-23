@@ -24,7 +24,7 @@ const SearchInput = ({ initKeyword = "" }: { initKeyword: string }) => {
         onChange={(e) => setSearchText(e.target.value)}
       />
       <Button type="submit" tabIndex={2}>
-        Search
+        搜索
       </Button>
     </form>
   );

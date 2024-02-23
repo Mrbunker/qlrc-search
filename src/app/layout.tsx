@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "qlrc-search",
-  description: "qlrc-search",
+  description: "search lyric",
 };
 
 export default function RootLayout({
@@ -15,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="zh-hans">
       <body className={inter.className}>
         <main className="container">{children}</main>
       </body>

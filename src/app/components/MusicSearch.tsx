@@ -64,7 +64,7 @@ const MusicSearch = ({}: Porps) => {
           defaultValue={keyword || undefined}
         />
         <Button type="submit" tabIndex={2}>
-          Search
+          搜索
         </Button>
       </div>
       <div className="grid gap-4">
