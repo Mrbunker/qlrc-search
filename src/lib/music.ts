@@ -1,13 +1,5 @@
-export const formatLrc = (lyric: string) => {
-  const formatSymbol = (str: string) => {
-    return str
-      .replace(/&apos;/g, "'")
-      .replace(/&quot;/g, '"')
-      .replace(/&amp;/g, "&")
-      .replace(/&lt;/g, "<")
-      .replace(/&gt;/g, ">");
-  };
-
+export const formatLrc = (fullLyric: string) => {
+  const lyric = formatLrcSymbol(fullLyric);
   // 匹配 [ti:xxx] 格式的信息
   const titleRegex = /\[ti:(.*?)\]/;
   // 匹配 [ar:xxx] 格式的信息
@@ -24,9 +16,18 @@ export const formatLrc = (lyric: string) => {
   const album = albumMatch ? albumMatch[1] : "";
 
   // 去掉歌词中的时间标签信息
-  const lyricText = formatSymbol(lyric)
+  const lyricText = lyric
     .replace(/\[[a-z]+.+\]\n/g, "")
     .replace(/\[\d{2}:\d{2}\.\d{2}\]/g, "");
 
   return { title, artist, album, lyricText };
+};
+
+const formatLrcSymbol = (str: string) => {
+  return str
+    .replace(/&apos;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">");
 };
