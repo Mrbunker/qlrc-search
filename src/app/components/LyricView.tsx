@@ -5,9 +5,9 @@ import { LabelSwitch } from "@/components/ui/labelSwtich";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { usePathname } from "next/navigation";
-import { setKV } from "@/api/kv";
+import { setKV } from "@/apis/kv";
 import useSWR from "swr";
-import { getLyric } from "@/api/music";
+import { getLyric } from "@/apis/music";
 
 const LyricView = () => {
   const [tranlationMode, setTranslationMode] = useState(false);
@@ -71,6 +71,11 @@ const LyricView = () => {
             <Button className="mt-4" type="submit">
               提交编辑
             </Button>
+            {
+              <Button className="mt-4" type="submit">
+                提交编辑
+              </Button>
+            }
           </form>
         ) : (
           <div className="whitespace-pre-line">

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MusicItem } from "@/api/music";
+import { MusicItem } from "@/apis/music";
 
 const Item = ({ item, index }: { item: MusicItem; index: number }) => {
   const singers = item.singer.map((s) => s.name).join(", ");

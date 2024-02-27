@@ -1,5 +1,5 @@
 "use client";
-import { MusicItem, searchMusic } from "../../api/music";
+import { MusicItem, searchMusic } from "../../apis/music";
 import { useCallback, useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";

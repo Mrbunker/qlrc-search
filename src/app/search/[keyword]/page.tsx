@@ -1,4 +1,4 @@
-import { searchMusic } from "../../../api/music";
+import { searchMusic } from "@/apis/music";
 import { SearchInput } from "./components/SearchInput";
 import { Item } from "./components/Item";
 

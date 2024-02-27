@@ -1,4 +1,5 @@
 import { baseRequest } from "./base";
+import { getKV } from "./kv";
 
 export interface SearchResult {
   list: MusicItem[];
@@ -50,18 +51,11 @@ export interface LyricResult {
 }
 
 export const getLyric = async (params: { songmid: string }) => {
-  try {
-    const kvLrc = await baseRequest<LyricResult>("/api/get_kv", {
-      method: "GET",
-      params: { key: `lyric_${params.songmid}` },
-      revalidate: 10,
-    });
-    if (!kvLrc.data?.lyric) {
-      throw new Error("kv lyric not found");
-    } else {
-      return kvLrc;
-    }
-  } catch (e) {
+  const kvLrc = await getKV({ key: `lyric_${params.songmid}` });
+
+  if (kvLrc.data?.lyric) {
+    return kvLrc;
+  } else {
     return baseRequest<LyricResult>(
       "https://api.timelessq.com/music/tencent/lyric",
       {

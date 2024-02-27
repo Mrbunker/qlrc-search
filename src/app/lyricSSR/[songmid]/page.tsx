@@ -1,4 +1,4 @@
-import { getLyric } from "@/api/music";
+import { getLyric } from "@/apis/music";
 import { notFound } from "next/navigation";
 import LyricView from "../../components/LyricView";
 
