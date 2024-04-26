@@ -1,12 +1,12 @@
 "use client";
 import { MouseEvent, useState } from "react";
+import useSWR from "swr";
 import { formatLrc } from "@/lib/music";
 import { LabelSwitch } from "@/components/ui/labelSwtich";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { usePathname } from "next/navigation";
 import { setKV } from "@/apis/kv";
-import useSWR from "swr";
 import { getLyric } from "@/apis/music";
 
 const LyricView = () => {

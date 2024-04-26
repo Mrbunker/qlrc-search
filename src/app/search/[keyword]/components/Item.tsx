@@ -7,7 +7,7 @@ const Item = ({ item, index }: { item: MusicItem; index: number }) => {
     <Link
       className="flex items-center gap-4"
       tabIndex={3 + index}
-      href={`/lyric/${item.songmid}`}
+      href={`/lyric/${item.songmid}#${item.songname}`}
     >
       <div className="w-12 h-12 object-cover rounded-lg overflow-hidden">
         {item.albumcover ? (
