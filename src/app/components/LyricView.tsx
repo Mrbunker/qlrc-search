@@ -5,46 +5,51 @@ import { formatLrc } from "@/lib/music";
 import { LabelSwitch } from "@/components/ui/labelSwtich";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { usePathname } from "next/navigation";
+import { useParams } from "next/navigation";
 import { setKV } from "@/apis/kv";
-import { getLyric } from "@/apis/music";
+import { getDetail, getLyric } from "@/apis/nc-music";
 
 const LyricView = () => {
   const [tranlationMode, setTranslationMode] = useState(false);
   const [editMode, setEditMode] = useState(false);
 
-  const songmid = usePathname().replace("/lyric/", "");
+  const { songmid: id } = useParams<{ songmid: string }>();
 
-  const { data: res, isLoading, error, mutate } = useSWR({ songmid }, getLyric);
+  const {
+    data: res,
+    isLoading,
+    error,
+    mutate,
+  } = useSWR("/lyric", () => getLyric({ id }));
+
   if (isLoading) {
     return <div>loading...</div>;
   }
   if (error || !res) {
     return <div>暂无歌词</div>;
   }
-  const { lyric, tlyric } = res.data;
+  const lyric = res.lrc.lyric;
+  const tlyric = res.tlyric.lyric || "";
 
   const handleSave = async (e: MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const lyric = formData.get("lyric") as string;
     const tlyric = formData.get("tlyric") as string;
-    await setKV({ key: `lyric_${songmid}`, value: { lyric, tlyric } });
-    mutate({ ...res, data: { lyric, tlyric } });
+    await setKV({ key: `lyric_${id}`, value: { lyric, tlyric } });
+    const mutateRes = { ...res };
+    mutateRes.lrc.lyric = lyric;
+    mutateRes.tlyric.lyric = tlyric;
+    mutate(mutateRes);
     setEditMode(false);
   };
 
-  const { title, artist, album, lyricText } = formatLrc(lyric);
+  const { lyricText } = formatLrc(lyric);
   const tlyricText = tlyric ? formatLrc(tlyric).lyricText : "";
 
   return (
     <div className="mt-4">
-      <div>
-        <p className="text-lg font-bold">
-          {title}-{artist}
-        </p>
-        <p className="text-gray-500">{album}</p>
-      </div>
+      <MusicDetail id={id} />
       <div className="mt-4 flex items-center space-x-2">
         <LabelSwitch
           id="translation"
@@ -87,4 +92,24 @@ const LyricView = () => {
   );
 };
 
+const MusicDetail = ({ id }: { id: string }) => {
+  const { data, isLoading, error } = useSWR("/song/detail", () =>
+    getDetail({ ids: id })
+  );
+
+  if (isLoading || error || !data) {
+    return <div>loading...</div>;
+  }
+  const title = data.songs[0].name;
+  const artist = data.songs[0].ar[0].name;
+  const albumName = data.songs[0].al.name;
+  return (
+    <div>
+      <p className="text-lg font-bold">
+        {title}-{artist}
+      </p>
+      <p className="text-gray-500">{albumName}</p>
+    </div>
+  );
+};
 export default LyricView;

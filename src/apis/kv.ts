@@ -1,5 +1,5 @@
 import { baseRequest } from "./base";
-import { LyricResult } from "./music";
+import { LyricResult } from "./nc-music";
 
 type KV_Response = {
   code: string;

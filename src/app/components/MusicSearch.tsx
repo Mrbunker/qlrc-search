@@ -1,5 +1,5 @@
 "use client";
-import { MusicItem, searchMusic } from "../../apis/music";
+import { MusicItem, searchMusic } from "@/apis/nc-music";
 import { useCallback, useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -27,14 +27,14 @@ const MusicSearch = ({}: Porps) => {
     [searchParams]
   );
 
-  const submitSearch = async (keyword: string) => {
-    if (!keyword) {
+  const submitSearch = async (keywords: string) => {
+    if (!keywords) {
       return;
     }
     setLoading(true);
-    const res = await searchMusic({ keyword });
-    if (res.data && res.data.list.length > 0) {
-      setSearchRes(res.data.list);
+    const res = await searchMusic({ keywords });
+    if (res.result && res.result.songs.length > 0) {
+      setSearchRes(res.result.songs);
     }
     setLoading(false);
     return res;
@@ -72,7 +72,7 @@ const MusicSearch = ({}: Porps) => {
           <p className="text-muted-foreground">Loading...</p>
         ) : (
           searchRes.map((item, index) => (
-            <Item key={item.songmid} item={item} index={index} />
+            <Item key={item.id} item={item} index={index} />
           ))
         )}
       </div>

@@ -1,6 +1,11 @@
 import { baseRequest } from "./base";
 import { getKV } from "./kv";
 
+type BaseQResp<D> = {
+  errmsg: { code: string } | "";
+  errno: number;
+  data: D;
+};
 export interface SearchResult {
   list: MusicItem[];
   /** 总数 */
@@ -35,7 +40,7 @@ export const searchMusic = (params: {
   page?: number;
   pageSize?: number;
 }) => {
-  return baseRequest<SearchResult>(
+  return baseRequest<BaseQResp<SearchResult>>(
     "https://api.timelessq.com/music/tencent/search",
     {
       method: "GET",
@@ -51,18 +56,12 @@ export interface LyricResult {
 }
 
 export const getLyric = async (params: { songmid: string }) => {
-  const kvLrc = await getKV({ key: `lyric_${params.songmid}` });
-
-  if (kvLrc.data?.lyric) {
-    return kvLrc;
-  } else {
-    return baseRequest<LyricResult>(
-      "https://api.timelessq.com/music/tencent/lyric",
-      {
-        method: "GET",
-        params: params,
-        revalidate: 10,
-      }
-    );
-  }
+  return baseRequest<BaseQResp<LyricResult>>(
+    "https://api.timelessq.com/music/tencent/lyric",
+    {
+      method: "GET",
+      params: params,
+      revalidate: 10,
+    }
+  );
 };

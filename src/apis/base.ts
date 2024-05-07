@@ -1,8 +1,8 @@
-type ResponseData<D> = {
-  errmsg: { code: string } | "";
-  errno: number;
-  data: D;
-};
+// type ResponseData<D> = {
+//   errmsg: { code: string } | "";
+//   errno: number;
+//   data: D;
+// };
 
 export const baseRequest = async <D>(
   apiUrl: string,
@@ -40,7 +40,7 @@ export const baseRequest = async <D>(
       throw new Error(`Request failed with status: ${response.status}`);
     }
 
-    const data: ResponseData<D> = await response.json();
+    const data: D = await response.json();
     return data;
   } catch (error) {
     console.error("Request error:", error);
