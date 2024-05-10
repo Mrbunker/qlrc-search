@@ -20,8 +20,8 @@ const LyricView = () => {
     isLoading,
     error,
     mutate,
-  } = useSWR("/lyric", () => getLyric({ id }));
-
+  } = useSWR(`/lyric/${id}`, () => getLyric({ id }));
+  console.log("|isLoading", isLoading);
   if (isLoading) {
     return <div>loading...</div>;
   }
@@ -29,7 +29,7 @@ const LyricView = () => {
     return <div>暂无歌词</div>;
   }
   const lyric = res.lrc.lyric;
-  const tlyric = res.tlyric.lyric || "";
+  const tlyric = res?.tlyric?.lyric || "";
 
   const handleSave = async (e: MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -39,7 +39,9 @@ const LyricView = () => {
     await setKV({ key: `lyric_${id}`, value: { lyric, tlyric } });
     const mutateRes = { ...res };
     mutateRes.lrc.lyric = lyric;
-    mutateRes.tlyric.lyric = tlyric;
+    if (mutateRes.tlyric) {
+      mutateRes.tlyric.lyric = tlyric;
+    }
     mutate(mutateRes);
     setEditMode(false);
   };
@@ -76,15 +78,10 @@ const LyricView = () => {
             <Button className="mt-4" type="submit">
               提交编辑
             </Button>
-            {
-              <Button className="mt-4" type="submit">
-                提交编辑
-              </Button>
-            }
           </form>
         ) : (
           <div className="whitespace-pre-line">
-            {tranlationMode ? tlyricText : lyricText}
+            {tranlationMode ? tlyricText : lyricText || "暂无歌词"}
           </div>
         )}
       </div>
@@ -93,7 +90,7 @@ const LyricView = () => {
 };
 
 const MusicDetail = ({ id }: { id: string }) => {
-  const { data, isLoading, error } = useSWR("/song/detail", () =>
+  const { data, isLoading, error } = useSWR(`/song/detail/${id}`, () =>
     getDetail({ ids: id })
   );
 

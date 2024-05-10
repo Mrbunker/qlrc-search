@@ -88,7 +88,7 @@ export interface LyricResult {
   };
   lrc: Lrc;
   klyric?: Lrc;
-  tlyric: Lrc;
+  tlyric?: Lrc;
   romalrc?: Lrc;
   code: number;
 }

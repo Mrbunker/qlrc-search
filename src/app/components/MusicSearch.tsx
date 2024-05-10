@@ -8,6 +8,8 @@ import { Item } from "../search/[keyword]/components/Item";
 
 type Porps = {};
 
+const SEARCH_TYEP = 1;
+
 const MusicSearch = ({}: Porps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -32,7 +34,7 @@ const MusicSearch = ({}: Porps) => {
       return;
     }
     setLoading(true);
-    const res = await searchMusic({ keywords });
+    const res = await searchMusic({ keywords, type: SEARCH_TYEP });
     if (res.result && res.result.songs.length > 0) {
       setSearchRes(res.result.songs);
     }

@@ -17,8 +17,9 @@ export const formatLrc = (fullLyric: string) => {
 
   // 去掉歌词中的时间标签信息
   const lyricText = lyric
-    .replace(/\[[a-z]+.+\]\n/g, "")
-    .replace(/\[\d{1,3}:\d{1,3}\.\d{1,3}\]/g, "");
+    .replace(/\[\d{1,3}:\d{1,3}\.\d{1,3}\]/g, "")
+    .replace(/[\u4e00-\u9fa5a-zA-Z]+\s:\s.+\s/gm, "")
+    .replace(/\[[a-z]+.+\]\n/g, "");
 
   return { lyricText };
 };
