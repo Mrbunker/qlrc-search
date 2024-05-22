@@ -21,7 +21,6 @@ const LyricView = () => {
     error,
     mutate,
   } = useSWR(`/lyric/${id}`, () => getLyric({ id }));
-  console.log("|isLoading", isLoading);
   if (isLoading) {
     return <div>loading...</div>;
   }
@@ -98,7 +97,7 @@ const MusicDetail = ({ id }: { id: string }) => {
     return <div>loading...</div>;
   }
   const title = data.songs[0].name;
-  const artist = data.songs[0].ar[0].name;
+  const artist = data.songs[0].ar.map((a) => a.name).join(" / ");
   const albumName = data.songs[0].al.name;
   return (
     <div>
