@@ -4,17 +4,15 @@
 //   data: D;
 // };
 
+type RequestConfig = {
+  method?: "GET" | "POST";
+  params?: Record<string, any>;
+  revalidate?: NextFetchRequestConfig["revalidate"];
+};
+
 export const baseRequest = async <D>(
   apiUrl: string,
-  {
-    method = "GET",
-    params,
-    revalidate,
-  }: {
-    method?: "GET" | "POST";
-    params?: Record<string, any>;
-    revalidate?: NextFetchRequestConfig["revalidate"];
-  }
+  { method = "GET", params, revalidate }: RequestConfig
 ) => {
   let fullUrl = apiUrl;
 
